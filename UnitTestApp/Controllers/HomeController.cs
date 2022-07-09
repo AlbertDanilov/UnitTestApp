@@ -29,5 +29,29 @@ namespace UnitTestApp.Controllers
         {
             return View(repo.GetAll());
         }
+
+        //sample3
+        public IActionResult GetUser(int? id)
+        {
+            if (!id.HasValue)
+                return BadRequest();
+            User user = repo.Get(id.Value);
+            if (user == null)
+                return NotFound();
+            return View(user);
+        }
+
+        public IActionResult AddUser() => View();
+
+        [HttpPost]
+        public IActionResult AddUser(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                repo.Create(user);
+                return RedirectToAction("Index");
+            }
+            return View(user);
+        }
     }
 }
